@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+   <div style="text-align:right;">
+       @{
+           if(Request.IsAuthenticated && HttpContext.Current.User != null)
+           {
+               var identity = (HttpContext.Current.User as FormsAuthExample.Models.MyPrincipal)
+                   .Identity as FormsAuthExample.Models.MyIdentity; 
+               <text> @string.Format("Hello {0}", identity.User.EmailID)</text>
+           }
+       }
+
+   </div>
+      @{
+          if(Request.IsAuthenticated)
+          {
+              using (Html.BeginForm("Logout", "MyAccount", FormMethod.Post, new { id = "logoutForm"}))
+              {
+                  <a href="javascript:document.getElementById('logoutForm').submit()">Logout</a>
+              }
+          }
+          else
+          {
+              @Html.ActionLink("Login", "Login", "MyAccount");
+          }
+      }
+    
+
+    @RenderBody()
+
+    @Scripts.Render("~/bundles/jquery")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
